@@ -18,10 +18,12 @@ const Navigation: FC = () => {
 			<Logo />
 			<div className='flex items-center space-x-2'>
 				{links.map(link => (
-					<div className='flex items-center space-x-1 text-text-100 hover:text-text-200 transition duration-300 ease-in-out'>
+					<div
+						key={link.title}
+						className='flex items-center space-x-1 text-text-100 hover:text-text-200 transition duration-300 ease-in-out'
+					>
 						<NavLink
 							to={link.path}
-							key={link.title}
 							className={({ isActive }) => (isActive ? 'underline' : '')}
 						>
 							{link.title}
