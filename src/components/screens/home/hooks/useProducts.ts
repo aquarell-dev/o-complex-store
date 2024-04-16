@@ -7,7 +7,7 @@ const useProducts = () => {
 	const [maxPage, setMaxPage] = useState(0)
 
 	const getProducts = async (page: number) => {
-		await new Promise(resolve => setTimeout(resolve, 1000))
+		await new Promise(resolve => setTimeout(resolve, 500)) // задержка чтоб увидеть лоадер
 
 		const response = await axiosClassic.get<ProductResponse>(
 			`/products?page=${page}&page_size=12`,

@@ -1,10 +1,22 @@
+import { useActions } from '@hooks/useActions'
+import useCartItem from '@hooks/useCartItem'
 import useCurrency from '@hooks/useCurrency'
 import Button from '@ui/button'
-import { FC } from 'react'
+import { Minus, Plus } from 'lucide-react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { Product as ProductProps } from 'src/types/product.types'
 
 const Product: FC<ProductProps> = product => {
+	const { cartItem } = useCartItem(product)
 	const format = useCurrency()
+	const { addProduct, decrementAmount, incrementAmount, setAmount } =
+		useActions()
+
+	const [newAmount, setNewAmount] = useState(cartItem?.amount.toString() || '0')
+
+	useEffect(() => {
+		setNewAmount(cartItem?.amount.toString() || '0')
+	}, [cartItem])
 
 	return (
 		<div className='max-w-72 bg-bg-200 flex flex-col justify-between space-y-4 p-2 rounded-sm shadow-md border border-white/10'>
@@ -23,7 +35,35 @@ const Product: FC<ProductProps> = product => {
 				<p className='text-center'>
 					Цена: <span className='font-medium'>{format(product.price)}</span>
 				</p>
-				<Button>Купить</Button>
+				{!!cartItem ? (
+					<div className='flex space-x-2'>
+						<Button
+							size='round'
+							onClick={() => decrementAmount(cartItem.product)}
+						>
+							<Minus />
+						</Button>
+						<input
+							className='bg-primary h-full w-full rounded-md flex items-center justify-center outline-none border-none text-center'
+							value={newAmount}
+							onChange={e => setNewAmount(e.target.value)}
+							onBlur={() => {
+								const numeric = Number(newAmount)
+
+								if (!!numeric)
+									setAmount({ ...cartItem.product, amount: numeric })
+							}}
+						/>
+						<Button
+							size='round'
+							onClick={() => incrementAmount(cartItem.product)}
+						>
+							<Plus />
+						</Button>
+					</div>
+				) : (
+					<Button onClick={() => addProduct(product)}>Купить</Button>
+				)}
 			</div>
 		</div>
 	)
