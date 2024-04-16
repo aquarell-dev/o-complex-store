@@ -1,10 +1,13 @@
 import Logo from '@ui/logo'
 import { FC, ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
-import { cn } from '@utils/cn'
 import { ShoppingCart } from 'lucide-react'
 
 const links: { title: string; path: string; icon?: ReactNode }[] = [
+	{
+		title: 'Отзывы',
+		path: '/reviews',
+	},
 	{
 		title: 'Корзина',
 		path: '/cart',
